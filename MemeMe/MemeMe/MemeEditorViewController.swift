@@ -89,9 +89,11 @@ final internal class MemeEditorViewController: UIViewController, UINavigationCon
     }
     
     /**
-     Configures text fields.
+     Configures a text field.
      
-     - Parameter reset: A boolean to determine whether to configure text fields for the first time or to reset them.
+     - Parameters:
+        - textField: The text field that will be configured.
+        - reset: A boolean to determine whether to configure the text field for the first time or to reset it.
      
      */
     func configureTextField(textField: UITextField, reset: Bool) {
