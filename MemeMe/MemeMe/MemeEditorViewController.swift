@@ -58,7 +58,7 @@ final internal class MemeEditorViewController: UIViewController, UINavigationCon
         super.viewDidLoad()
         
         setupDelegates()
-        configureUI()
+        configureUI(reset: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,28 +75,57 @@ final internal class MemeEditorViewController: UIViewController, UINavigationCon
     
     // MARK: - Private methods
         
-    /// Configures the UI
-    func configureUI() {
-        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
-        topTextField.defaultTextAttributes = textFieldAttributes
-        bottomTextField.defaultTextAttributes = textFieldAttributes
-        topTextField.textAlignment = .center
-        bottomTextField.textAlignment = .center
-        
-        pickedImageView.backgroundColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1)
-        
-        resetUI()
+    /**
+     Configures the UI.
+     
+     - Parameter reset: A boolean to determine whether to configure the UI for the first time or to reset it.
+     
+     */
+    func configureUI(reset: Bool) {
+        configureTextField(textField: topTextField, reset: reset)
+        configureTextField(textField: bottomTextField, reset: reset)
+        configureButtons(reset: reset)
+        configureImageView(reset: reset)
     }
     
-    /// Resets the UI
-    func resetUI() {
+    /**
+     Configures text fields.
+     
+     - Parameter reset: A boolean to determine whether to configure text fields for the first time or to reset them.
+     
+     */
+    func configureTextField(textField: UITextField, reset: Bool) {
+        textField.text = textField == topTextField ? Placeholders.top : Placeholders.bottom
+        if !reset {
+            textField.defaultTextAttributes = textFieldAttributes
+            textField.textAlignment = .center
+        }
+    }
+    
+    /**
+     Configures buttons.
+     
+     - Parameter reset: A boolean to determine whether to configure buttons for the first time or to reset them.
+     
+     */
+    func configureButtons(reset: Bool) {
         shareButton.isEnabled = false
-        
-        topTextField.text = Placeholders.top
-        bottomTextField.text = Placeholders.bottom
-        
+        if !reset {
+            cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        }
+    }
+    
+    /**
+     Configures the image view.
+     
+     - Parameter reset: A boolean to determine whether to configure the image view for the first time or to reset it.
+     
+     */
+    func configureImageView(reset: Bool) {
         pickedImageView.image = nil
+        if !reset {
+            pickedImageView.backgroundColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1)
+        }
     }
     
     /**
@@ -136,7 +165,7 @@ final internal class MemeEditorViewController: UIViewController, UINavigationCon
      
      */
     @IBAction func cancelMemedImage(_ sender: UIBarButtonItem) {
-        resetUI()
+        configureUI(reset: true)
     }
     
     // MARK: - Delegate methods
